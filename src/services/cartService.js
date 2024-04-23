@@ -6,7 +6,8 @@ const axios = require('axios');
 async function getCartDetails(userId) {
   try {
     const CartServiceUrl = await ServiceRegistryClient.getInstance().getUrl('Cart');
-    const response = await axios.get(`${CartServiceUrl}/getcart`,
+    const url = new URL('/api/view/:userId', CartServiceUrl).toString()
+    const response = await axios.get(url,
       { params: { userId } }
     );
 

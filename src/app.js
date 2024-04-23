@@ -9,10 +9,9 @@ const mongoose = require('mongoose')
 const CustomLogger = require('./utils/logger')
 const { errorHandler } = require('./utils/error')
 const ServiceRegistryClient = require('./utils/serviceRegistry')
-
+const orderRoutes = require('./routes/orderRoutes')
 const mongoUrl = config.MONGODB_URI
-console.log(config)
-console.log(mongoUrl)
+
 const connection = mongoose.connection
 mongoose.set('strictQuery', false)
 mongoose.connect(mongoUrl)
@@ -58,5 +57,6 @@ app.get('/api', async (req, res, next) => {
 })
 
 app.use('/api', errorHandler)
+app.use('/api/order', orderRoutes);
 
 module.exports = app
