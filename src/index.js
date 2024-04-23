@@ -1,10 +1,10 @@
-const app = require('./src/app')
+const app = require('./app')
 const http = require('http')
-const config = require('./src/config/config')
+const config = require('./config/config')
 // eslint-disable-next-line max-len
-const { paymentCreatedListener } = require('./src/eventhandlers/paymentCreatedListener');
-const { createOrder } = require('./src/services/orderService');
-const ServiceRegistryClient = require('./src/utils/serviceRegistry')
+const { paymentCreatedListener } = require('./eventhandlers/paymentCreatedListener');
+const { createOrder } = require('./services/orderService');
+const ServiceRegistryClient = require('./utils/serviceRegistry')
 const server = http.createServer(app)
 
 const serviceRegistryClientInstance = new ServiceRegistryClient()

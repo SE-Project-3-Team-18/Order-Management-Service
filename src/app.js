@@ -7,13 +7,15 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const CustomLogger = require('./utils/logger')
-const { errorHandler, CustomError } = require('./utils/error')
+const { errorHandler } = require('./utils/error')
 const ServiceRegistryClient = require('./utils/serviceRegistry')
 
 const mongoUrl = config.MONGODB_URI
+console.log(config)
+console.log(mongoUrl)
 const connection = mongoose.connection
 mongoose.set('strictQuery', false)
-mongoose.connect(mongoUrl, { useNewurlParser: true })
+mongoose.connect(mongoUrl)
   .then(() => {
     console.log('connected to MongoDB')
   })
