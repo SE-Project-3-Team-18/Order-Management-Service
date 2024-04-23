@@ -1,5 +1,6 @@
 const Order = require('../models/order')
 const cartService = require('./cartService');
+const { sendEmail } = require('./notificationService');
 const createOrder = async (data) => {
   const userCart = await cartService.getCartDetails(data.userId)
 
@@ -20,9 +21,13 @@ const createOrder = async (data) => {
 
   try {
     await newOrder.save();
-    return newOrder;
   } catch (err) {
     console.error('Error saving payment details:', err);
+  }
+  try {
+    await sendEmail(data.userId)
+  } catch (err) {
+    console.error('Error sending email:', err);
   }
 };
 
