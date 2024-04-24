@@ -50,17 +50,13 @@ const OrderSchema = new mongoose.Schema(
       postal_code: { type: String, required: true },
     },
     paymentId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Payment',
+      type: String,
+      required: true,
     },
     orderStatus: {
         type: String,
         enum: Object.values(orderStatus),
         default: orderStatus.pending
-    },
-    checkoutSessionId: {
-        type: String,
-        default: null
     },
     isOrderDelivered: {
         type: Boolean,

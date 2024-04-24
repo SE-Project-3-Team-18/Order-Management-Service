@@ -3,7 +3,7 @@ const cartService = require('./cartService');
 const { sendEmail } = require('./notificationService');
 const createOrder = async (data) => {
   const userCart = await cartService.getCartDetails(data.userId)
-
+  const customerAddress = JSON.parse(data.address);
   const products = userCart.items.map(item => ({
     productId: item.productId,
     name: item.name,
@@ -16,6 +16,7 @@ const createOrder = async (data) => {
   const newOrder = new Order({
     userId: data.userId,
     products,
+    customerAddress,
     paymentId: data.paymentId,
   });
 
