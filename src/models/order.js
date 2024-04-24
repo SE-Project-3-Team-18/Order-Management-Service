@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
 
 const orderStatus = {
   pending: 'pending',
@@ -54,13 +53,13 @@ const OrderSchema = new mongoose.Schema(
       required: true,
     },
     orderStatus: {
-        type: String,
-        enum: Object.values(orderStatus),
-        default: orderStatus.pending
+      type: String,
+      enum: Object.values(orderStatus),
+      default: orderStatus.pending,
     },
     isOrderDelivered: {
-        type: Boolean,
-        default: false
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

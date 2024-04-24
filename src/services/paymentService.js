@@ -6,15 +6,11 @@ async function getPaymentDetailsById(paymentId) {
   try {
     // eslint-disable-next-line max-len
     const PaymentServiceUrl = await ServiceRegistryClient.getInstance().getUrl('Payment');
-    const response = await axios.get(`${PaymentServiceUrl}/get`,
-      { params: { paymentId } }
-    );
+    const url = new URL(`/api/payment/get/${paymentId}`, PaymentServiceUrl).toString();
+    const response = await axios.get(url);
 
-    if (!response.ok) {
-      throw new CustomError('HTTP error! in fetching cart details', 500, false);
-    }
-
-    const data = await response.json();
+    const data = response.data;
+    
     console.log('payment data from order service side', data);
   } catch (error) {
     console.error('Error fetching cart details:', error.message);

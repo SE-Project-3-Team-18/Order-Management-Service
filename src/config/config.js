@@ -8,11 +8,8 @@ const SERVICE_HOST = process.env.SERVICE_HOST
 const MONGODB_URI = process.env.ATLAS_URI
 
 const SERVICE_REGISTRY_BASE_URI = 'http://localhost:3001'
-
-const NATS_CLUSTERID = 'paymentcreation_cluster';
-const NATS_CLIENTID = 'paymentcreation-client';
-const NATS_SUBJECT = 'payment:created';
-const NATS_QUEUEGROUPNAME = 'order-service';
+const PAYMENT_CREATED = 'payment:created';
+const ORDER_CANCELLED = 'order:cancelled';
 
 module.exports = {
   PORT,
@@ -20,8 +17,6 @@ module.exports = {
   SERVICE_HOST,
   MONGODB_URI,
   SERVICE_REGISTRY_BASE_URI,
-  NATS_CLUSTERID,
-  NATS_CLIENTID,
-  NATS_SUBJECT,
-  NATS_QUEUEGROUPNAME,
+  PAYMENT_CREATED,
+  ORDER_CANCELLED,
 }

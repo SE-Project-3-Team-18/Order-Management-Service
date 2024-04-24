@@ -1,21 +1,15 @@
 /* eslint-disable max-len */
 const ServiceRegistryClient = require('../utils/serviceRegistry');
-const { CustomError } = require('../utils/error');
 const axios = require('axios');
 
 async function getCartDetails(userId) {
   try {
     const CartServiceUrl = await ServiceRegistryClient.getInstance().getUrl('Cart');
-    const url = new URL('/api/view/:userId', CartServiceUrl).toString()
-    const response = await axios.get(url,
-      { params: { userId } }
-    );
+    const url = new URL(`/api/view/${userId}`, CartServiceUrl).toString()
+    const response = await axios.get(url);
 
-    if (!response.ok) {
-      throw new CustomError('HTTP error! in fetching cart details', 500, false);
-    }
+    const data = response.data;
 
-    const data = await response.json();
     return data;
   } catch (error) {
     console.error('Error fetching cart details:', error.message);
@@ -23,4 +17,16 @@ async function getCartDetails(userId) {
   }
 }
 
-module.exports = { getCartDetails };
+async function clearCart(userId) {
+  try{
+    const CartServiceUrl = await ServiceRegistryClient.getInstance().getUrl('Cart');
+    const url = new URL(`/api/clear-cart/${userId}`, CartServiceUrl).toString()
+    const response = axios.delete(url);
+    return response.data;
+  } catch (error) {
+    console.error('Error in clearing cart:', error.message);
+    throw error;
+  }
+}
+
+module.exports = { getCartDetails, clearCart };

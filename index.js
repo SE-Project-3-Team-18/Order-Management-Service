@@ -15,6 +15,6 @@ server.listen(config.PORT, () => {
 })
 
 paymentCreatedListener(
-  config.NATS_SUBJECT,
+  config.PAYMENT_CREATED,
   createOrder
 );

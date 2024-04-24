@@ -22,8 +22,9 @@ const createOrder = async (data) => {
 
   try {
     await newOrder.save();
+    await cartService.clearCart(data.userId);
   } catch (err) {
-    console.error('Error saving payment details:', err);
+    console.error('Error in creating order:', err);
   }
   try {
     await sendEmail(data.userId)
@@ -43,7 +44,7 @@ const getOrderDetails = async (orderId) => {
 
 const getOrdersOfUser = async (userId) => {
   try {
-    const orders = await Order.find({ userId });
+    const orders = await Order.find({ _id: userId });
     return orders;
   } catch (err) {
     console.error('Error fetching orders by user:', err);

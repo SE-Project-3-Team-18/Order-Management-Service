@@ -7,13 +7,14 @@ async function paymentCreatedListener(subject, createOrder) {
   console.log('Listener connected to NATS');
   const sc = StringCodec();
   client.subscribe(subject, {
-    queue: 'order-service',
+    queue: 'payment-listener',
     callback: (err, msg) => {
       if (err) {
         console.log(err.message);
       } else {
+        const message = JSON.parse(sc.decode(msg.data))
         console.log(`Received message: ${sc.decode(msg.data)}`);
-        createOrder(sc.decode(msg.data));
+        createOrder(message);
       }
     },
   });
