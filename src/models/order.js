@@ -2,6 +2,9 @@ const mongoose = require('mongoose');
 
 const orderStatus = {
   pending: 'pending',
+  inTransit: 'In transit',
+  reachedNearestHub: 'reached hub nearest to you',
+  outForDelivery: 'out for delivery',
   completed: 'delivered',
   cancelled: 'cancelled',
 };

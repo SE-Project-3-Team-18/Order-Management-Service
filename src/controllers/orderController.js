@@ -2,6 +2,8 @@
 const orderService = require('../services/orderService');
 const paymentService = require('../services/paymentService');
 const Order = require('../models/order');
+const { CustomError } = require('../utils/error');
+const { sendEmail } = require('../services/notificationService');
 // eslint-disable-next-line max-len
 
 async function cancelOrder(req, res, next) {
@@ -106,4 +108,26 @@ async function getOrdersByUser(req, res, next) {
   }
 }
 
-module.exports = { cancelOrder, createOrder, getOrderById, getOrdersByUser };
+const updateStatusOfOrder = async (req, res, next) => {
+  try {
+    const { orderId, newStatus } = req.body
+    const order = await Order.findById(orderId)
+    if (order.orderStatus === 'cancelled') {
+      throw new CustomError('Order is already cancelled', 400, false)
+    }
+    order.orderStatus = newStatus
+    await order.save()
+    const subject = 'Your order is 1 step closer'
+    const body = `Your order is 1 step closer, latest update regarding your order: ${newStatus}. visit the website to know more.`
+    await sendEmail(order.userId, subject, body)
+    res.status(200)
+      .json({
+        success: true,
+        message: 'Order status updated successfully',
+      });
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports = { cancelOrder, createOrder, getOrderById, getOrdersByUser, updateStatusOfOrder };

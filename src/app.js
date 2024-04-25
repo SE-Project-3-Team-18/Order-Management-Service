@@ -10,6 +10,7 @@ const CustomLogger = require('./utils/logger')
 const { errorHandler } = require('./utils/error')
 const ServiceRegistryClient = require('./utils/serviceRegistry')
 const orderRoutes = require('./routes/orderRoutes')
+const { updateStatusOfOrder } = require('./controllers/orderController')
 const mongoUrl = config.MONGODB_URI
 
 const connection = mongoose.connection
@@ -58,5 +59,8 @@ app.get('/api', async (req, res, next) => {
 
 app.use('/api', errorHandler)
 app.use('/api/order', orderRoutes);
+app.use('/api/for-agent/update-status', updateStatusOfOrder)
+
+app.use('/api', errorHandler)
 
 module.exports = app

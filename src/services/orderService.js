@@ -28,7 +28,9 @@ const createOrder = async (data) => {
     console.error('Error in creating order:', err);
   }
   try {
-    await sendEmail(data.userId)
+    const subject = 'New Order Placed'
+    const body = 'Your order has been placed successfully, visit our website to track your order.'
+    await sendEmail(data.userId, subject, body)
   } catch (err) {
     console.error('Error sending email:', err);
   }

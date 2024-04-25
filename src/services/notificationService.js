@@ -3,15 +3,23 @@ const ServiceRegistryClient = require('../utils/serviceRegistry');
 const { CustomError } = require('../utils/error');
 const axios = require('axios');
 
-async function sendEmail(userId) {
+async function sendEmail(userId, subject, body) {
   try {
     const NotificationServiceUrl = await ServiceRegistryClient.getInstance().getUrl('Notification');
     const url = new URL('/api/send-email-by-id', NotificationServiceUrl).toString()
     const response = await axios.post(url,
       {
         userId,
-        subject: 'New Order Placed',
-        body: 'Your order has been placed successfully, visit our website to track your order.',
+        subject,
+        body,
+      }
+    );
+    const url2 = new URL('/api/send-notification', NotificationServiceUrl).toString()
+    await axios.post(url2,
+      {
+        userId,
+        title: subject,
+        info: body,
       }
     );
   } catch (e) {
