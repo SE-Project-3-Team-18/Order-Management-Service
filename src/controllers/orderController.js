@@ -1,9 +1,8 @@
 /* eslint-disable max-len */
 const orderService = require('../services/orderService');
+const paymentService = require('../services/paymentService');
 const Order = require('../models/order');
-const config = require('../config/config');
 // eslint-disable-next-line max-len
-const { orderCancelledPublisher } = require('../eventhandlers/orderCancelledPublisher');
 
 async function cancelOrder(req, res, next) {
   try {
@@ -31,11 +30,23 @@ async function cancelOrder(req, res, next) {
       })
     }
     const paymentId = order.paymentId;
-    orderCancelledPublisher(config.ORDER_CANCELLED, paymentId);
+    await paymentService.refundPayment(paymentId);
     // eslint-disable-next-line no-unused-vars
     const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderStatus: 'cancelled' }, { new: true });
     res.status(200).json({
       message: 'Order with id ' + orderId + ' has been cancelled successfully.',
+    });
+  } catch (error) {
+    next(error);
+  }
+}
+
+async function createOrder(req, res, next) {
+  try {
+    const data = req.body;
+    await orderService.createOrder(data);
+    res.status(201).json({
+      message: 'Order created successfully.',
     });
   } catch (error) {
     next(error);
@@ -92,4 +103,4 @@ async function getOrdersByUser(req, res, next) {
   }
 }
 
-module.exports = { cancelOrder, getOrderById, getOrdersByUser };
+module.exports = { cancelOrder, createOrder, getOrderById, getOrdersByUser };

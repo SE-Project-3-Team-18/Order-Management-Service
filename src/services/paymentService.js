@@ -1,5 +1,4 @@
 const ServiceRegistryClient = require('../utils/serviceRegistry');
-const { CustomError } = require('../utils/error');
 const axios = require('axios');
 
 async function getPaymentDetailsById(paymentId) {
@@ -10,7 +9,6 @@ async function getPaymentDetailsById(paymentId) {
     const response = await axios.get(url);
 
     const data = response.data;
-    
     console.log('payment data from order service side', data);
   } catch (error) {
     console.error('Error fetching cart details:', error.message);
@@ -18,4 +16,17 @@ async function getPaymentDetailsById(paymentId) {
   }
 }
 
-module.exports = { getPaymentDetailsById };
+async function refundPayment(paymentId) {
+  try {
+    const PaymentServiceUrl = await ServiceRegistryClient.getInstance().getUrl('Payment');
+    const url = new URL(`/api/payment/refund/${paymentId}`, PaymentServiceUrl).toString();
+    const response = await axios.post(url);
+    const data = response.data;
+    console.log('payment response from order service side', data);
+  } catch (error) {
+    console.error('Error while sending payment details to order service side', error);
+    throw error;
+  }
+}
+
+module.exports = { getPaymentDetailsById, refundPayment };
