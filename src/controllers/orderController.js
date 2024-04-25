@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 const orderService = require('../services/orderService');
 const paymentService = require('../services/paymentService');
+const productService = require('../services/productService');
 const Order = require('../models/order');
 const { CustomError } = require('../utils/error');
 const { sendEmail } = require('../services/notificationService');
@@ -34,6 +35,7 @@ async function cancelOrder(req, res, next) {
     const paymentId = order.paymentId;
     await paymentService.refundPayment(paymentId);
     // eslint-disable-next-line no-unused-vars
+    const response = await productService.increaseProductQuantity(order.products);
     const updatedOrder = await Order.findByIdAndUpdate(orderId, { orderStatus: 'cancelled' }, { new: true });
     res.status(200).json({
       message: 'Order with id ' + orderId + ' has been cancelled successfully.',

@@ -41,7 +41,6 @@ const OrderSchema = new mongoose.Schema(
       required: true,
     },
     products: [OrderItemSchema],
-
     customerAddress: {
       line1: { type: String, required: true },
       line2: { type: String, required: true },
