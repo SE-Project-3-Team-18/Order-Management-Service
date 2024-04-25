@@ -26,7 +26,6 @@ const OrderItemSchema = new mongoose.Schema(
     },
     imageUrl: {
       type: String,
-      required: true,
     },
   },
   { timestamps: true }

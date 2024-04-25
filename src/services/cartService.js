@@ -18,7 +18,7 @@ async function getCartDetails(userId) {
 }
 
 async function clearCart(userId) {
-  try{
+  try {
     const CartServiceUrl = await ServiceRegistryClient.getInstance().getUrl('Cart');
     const url = new URL(`/api/clear-cart/${userId}`, CartServiceUrl).toString()
     const response = axios.delete(url);

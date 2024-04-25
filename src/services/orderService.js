@@ -3,16 +3,17 @@ const cartService = require('./cartService');
 const { sendEmail } = require('./notificationService');
 const createOrder = async (data) => {
   const userCart = await cartService.getCartDetails(data.userId)
+  console.log(userCart)
   const customerAddress = JSON.parse(data.address);
   const products = userCart.items.map(item => ({
     productId: item.productId,
     name: item.name,
     price: item.price,
-    quantity: item.cartQuantity,
-    imageUrl: item.imageUrl,
+    quantity: item.quantity,
   }
   ));
 
+  console.log(products)
   const newOrder = new Order({
     userId: data.userId,
     products,
@@ -44,7 +45,7 @@ const getOrderDetails = async (orderId) => {
 
 const getOrdersOfUser = async (userId) => {
   try {
-    const orders = await Order.find({ _id: userId });
+    const orders = await Order.find({ userId });
     return orders;
   } catch (err) {
     console.error('Error fetching orders by user:', err);

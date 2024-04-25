@@ -44,6 +44,7 @@ async function cancelOrder(req, res, next) {
 async function createOrder(req, res, next) {
   try {
     const data = req.body;
+    console.log(data)
     await orderService.createOrder(data);
     res.status(201).json({
       message: 'Order created successfully.',
@@ -57,6 +58,7 @@ async function getOrderById(req, res, next) {
   try {
     const orderId = req.params.orderId;
     const userId = req.get('X-User-Id');
+    console.log(orderId)
     const order = await orderService.getOrderDetails(orderId);
     if (order.userId !== userId) {
       return res.status(403).json({
@@ -79,6 +81,7 @@ async function getOrderById(req, res, next) {
 async function getOrdersByUser(req, res, next) {
   try {
     const userId = req.get('X-User-Id');
+    console.log(userId)
     const orders = await orderService.getOrdersOfUser(userId);
     if (!orders) {
       return res.status(404).json({
